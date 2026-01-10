@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Realm of Atheria | Dexterity</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+
+<body>
+
+  <div class="viewport">
+
+    <!-- FIRST SCREEN -->
+    <div class="first-screen">
+
+      <!-- DEXTERITY PRESENTS -->
+      <img
+        src="./DEXTERITY-presents.jpg"
+        alt="Dexterity Presents"
+        class="dexterity-presents-img"
+      />
+
+      <!-- GAME TITLE -->
+      <img
+        src="./Reals of Atheria.PNG"
+        alt="Realm of Atheria"
+        class="game-title-img"
+      />
+
+      <!-- GAME LOGO -->
+      <img
+        src="./GAME-LOGO.PNG"
+        alt="Realm of Atheria Logo"
+        class="game-emblem"
+      />
+
+      <!-- SELECTION SCREEN -->
+      <div id="selection-screen">
+
+        <div class="subtitle">Choose Your Trial</div>
+
+        <div class="card-container">
+          <div class="card stone-tablet" onclick="selectDifficulty(5,this)">
+            <div class="tablet-content">
+              <h2>5</h2><p>1 STEP</p>
+            </div>
+          </div>
+
+          <div class="card stone-tablet" onclick="selectDifficulty(10,this)">
+            <div class="tablet-content">
+              <h2>10</h2><p>2 STEPS</p>
+            </div>
+          </div>
+
+          <div class="card stone-tablet" onclick="selectDifficulty(15,this)">
+            <div class="tablet-content">
+              <h2>15</h2><p>3 STEPS</p>
+            </div>
+          </div>
+        </div>
+
+        <button class="jungle-btn" onclick="startTrial()">
+          Enter the Jungle
+        </button>
+      </div>
+    </div>
+
+    <!-- TRIAL SCREEN -->
+    <div id="trial-screen" class="container hidden">
+
+      <div class="difficulty-header">
+        <span id="difficulty-badge"></span>
+        <span id="tribe-header"></span>
+      </div>
+
+      <!-- QUESTION + TIMER WRAPPER -->
+      <div class="question-wrapper">
+
+        <div id="global-timer" class="timer-above hidden">
+          20 seconds left
+        </div>
+
+        <div id="question-area">
+          <button class="jungle-btn" onclick="generateQuestion()">
+            Roll the Sacred Dice
+          </button>
+        </div>
+
+      </div>
+
+      <div id="options-grid" class="hidden"></div>
+      <div id="feedback"></div>
+
+    </div>
+
+  </div>
+
+  <script type="module" src="/main.js"></script>
+</body>
+</html>
