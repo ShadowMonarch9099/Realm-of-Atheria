@@ -10,18 +10,23 @@ let countdownTimer;
 
 const tribes = ["Flame Tribe", "Aqua Tribe", "Earth Tribe", "Wind Tribe"];
 
-/* SELECTION */
+/* ===================== SELECTION ===================== */
 
 window.selectDifficulty = (pts, el) => {
   selectedPoints = pts;
-  document.querySelectorAll(".card").forEach(c => c.classList.remove("selected"));
+  document
+    .querySelectorAll(".stone-tablet")
+    .forEach(c => c.classList.remove("selected"));
   el.classList.add("selected");
 };
 
 window.startTrial = () => {
-  if (!selectedPoints) return alert("Select a difficulty.");
+  if (!selectedPoints) {
+    alert("Select a difficulty.");
+    return;
+  }
 
-  document.getElementById("selection-screen").classList.add("hidden");
+  document.querySelector(".first-screen").classList.add("hidden");
   document.getElementById("trial-screen").classList.remove("hidden");
 
   document.getElementById("difficulty-badge").innerText =
@@ -31,40 +36,44 @@ window.startTrial = () => {
     tribes[Math.floor(Math.random() * tribes.length)];
 };
 
-/* QUESTION */
+/* ===================== QUESTION ===================== */
 
 window.generateQuestion = async () => {
   const area = document.getElementById("question-area");
   const grid = document.getElementById("options-grid");
-  const feedback = document.getElementById("feedback");
+  const timer = document.getElementById("global-timer");
 
-  area.innerHTML = `<div class="loader">Consulting the Spirits of Eternum...</div>`;
+  area.innerHTML = "<p>Consulting the Spirits of Atheria...</p>";
   grid.classList.add("hidden");
-  feedback.innerText = "";
-
-  const topic =
-    selectedPoints === 5
-      ? "General Knowledge or Aptitude"
-      : selectedPoints === 10
-      ? "Basic Computer Science or IT fundamentals"
-      : "Programming logic or implementation-based concepts";
+  timer.classList.add("hidden");
 
   const prompt = `
-You are a quiz master.
-Generate ONE concise MCQ.
-Topic: ${topic}.
-Difficulty: ${selectedPoints} points.
+You are an expert quiz master designing questions for a LIVE, time-bound fantasy board game called "Realm of Atheria".
+
+Difficulty and timing:
+- 5 points → 10 seconds → logical reasoning, mental math, aptitude
+- 10 points → 15 seconds → core CS / IT fundamentals
+- 15 points → 20 seconds → programming logic, code reasoning, edge cases
 
 Rules:
-- Question must be SHORT and clear.
-- Options must be brief.
-- Avoid long descriptions.
-- Output STRICT JSON only.
+- Questions must be challenging but solvable within the time limit.
+- Avoid trivial or one-glance answers.
+- Avoid excessive text; focus on thinking, not reading speed.
+- If code is involved, include it clearly.
 
+Output rules:
+- EXACTLY one MCQ
+- EXACTLY 4 options
+- ONLY one correct answer
+- No explanations
+- STRICT JSON only
+- If code is included, wrap it in triple backticks
+
+Format:
 {
-  "question": "...",
-  "options": ["A","B","C","D"],
-  "answer": "Exact correct option"
+  "question": "Question text (code allowed)",
+  "options": ["A", "B", "C", "D"],
+  "answer": "Correct option"
 }
 `;
 
@@ -75,24 +84,31 @@ Rules:
     });
 
     const raw = res.text.trim();
-    const json = JSON.parse(raw.slice(raw.indexOf("{"), raw.lastIndexOf("}") + 1));
-    renderQuestion(json);
+    const json = raw.slice(raw.indexOf("{"), raw.lastIndexOf("}") + 1);
+    const q = JSON.parse(json);
+    renderQuestion(q);
 
-  } catch {
+  } catch (err) {
+    console.warn("API failed, using local fallback", err);
     const bank = localQuestions[selectedPoints];
-    renderQuestion(bank[Math.floor(Math.random() * bank.length)]);
+    const fallback =
+      bank[Math.floor(Math.random() * bank.length)];
+    renderQuestion(fallback);
   }
 };
 
-/* GAME FLOW */
+/* ===================== RENDER ===================== */
 
 function renderQuestion(q) {
-  const area = document.getElementById("question-area");
+  const formattedQuestion = q.question.replace(
+    /```([\s\S]*?)```/g,
+    '<pre class="code-block">$1</pre>'
+  );
 
-  area.innerHTML = `
+  document.getElementById("question-area").innerHTML = `
     <div class="question-card">
       <div class="question-text">
-        <strong>Q.</strong> ${q.question}
+        <strong>Q.</strong> ${formattedQuestion}
       </div>
     </div>
   `;
@@ -105,22 +121,21 @@ function renderQuestion(q) {
     const btn = document.createElement("button");
     btn.className = "option-btn";
     btn.innerText = opt;
-    btn.onclick = () => {
-      disableOptions(true);
-      verifyAnswer(opt, q.answer);
-    };
+    btn.disabled = true; // disabled during reading time
+    btn.onclick = () => verifyAnswer(opt, q.answer);
     grid.appendChild(btn);
   });
 
-  disableOptions(true);
-
+  // ⏳ Reading time before countdown
   setTimeout(() => {
-    disableOptions(false);
+    document
+      .querySelectorAll(".option-btn")
+      .forEach(btn => (btn.disabled = false));
     startCountdown();
   }, 4000);
 }
 
-/* TIMER */
+/* ===================== TIMER ===================== */
 
 function startCountdown() {
   let time =
@@ -134,41 +149,46 @@ function startCountdown() {
   countdownTimer = setInterval(() => {
     time--;
     timer.innerText = `${time} seconds left`;
+
     if (time <= 0) {
       clearInterval(countdownTimer);
-      endTurn(false, "Time has claimed the tribe.");
+      endTurn(false, "Time has run out.");
     }
   }, 1000);
 }
 
-/* ANSWERS */
+/* ===================== ANSWERS ===================== */
 
-function verifyAnswer(sel, correct) {
+function verifyAnswer(selected, correct) {
   clearInterval(countdownTimer);
-  markResult(sel, correct);
+
+  document.querySelectorAll(".option-btn").forEach(btn => {
+    if (btn.innerText === correct)
+      btn.classList.add("option-correct");
+    if (btn.innerText === selected && selected !== correct)
+      btn.classList.add("option-wrong");
+    btn.disabled = true;
+  });
+
+  const win = selected === correct;
 
   endTurn(
-    sel === correct,
-    sel === correct
-      ? "Victory! The path opens."
-      : `Defeat! Correct answer: ${correct}`
+    win,
+    win
+      ? "Correct! The tribe advances."
+      : `Wrong! Correct answer: ${correct}`
   );
 }
 
-function markResult(sel, correct) {
-  document.querySelectorAll(".option-btn").forEach(b => {
-    if (b.innerText === correct) b.classList.add("option-correct");
-    if (b.innerText === sel && sel !== correct) b.classList.add("option-wrong");
-  });
-}
+/* ===================== END TURN ===================== */
 
-function disableOptions(v) {
-  document.querySelectorAll(".option-btn").forEach(b => b.disabled = v);
-}
+function endTurn(win, message) {
+  const feedback = document.getElementById("feedback");
+  feedback.innerText = message;
+  feedback.style.color = win ? "#6fbf8a" : "#c56b6b";
 
-function endTurn(win, msg) {
-  const f = document.getElementById("feedback");
-  f.innerText = msg;
-  f.style.color = win ? "#2ecc71" : "#e74c3c";
-  setTimeout(() => location.reload(), 12000);
+  // Allow players to read result clearly
+  setTimeout(() => {
+    location.reload();
+  }, 12000);
 }

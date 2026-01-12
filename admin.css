@@ -1,0 +1,143 @@
+* {
+  box-sizing: border-box;
+  font-family: 'Trebuchet MS', serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.85)),
+    url("./GAME-LOGO.jpeg") no-repeat center/cover;
+  color: #f5e6a1;
+
+  
+  margin: 0;
+  min-height: 100vh;
+
+  background-image: url("bg.jpg");
+  background-size: cover;      /* fill screen */
+  background-position: center; /* center image */
+  background-repeat: no-repeat;
+
+
+
+  
+}
+
+/* MAIN WRAPPER */
+.admin-container {
+  padding: 40px;
+  text-align: center;
+}
+
+/* TITLES */
+.title {
+  font-size: 42px;
+  color: gold;
+  text-shadow: 0 0 15px #ffcc00;
+  margin-bottom: 5px;
+}
+
+.subtitle {
+  font-size: 16px;
+  letter-spacing: 2px;
+  opacity: 0.8;
+  margin-bottom: 40px;
+}
+
+/* PANELS */
+.panel-grid {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.stone-panel {
+  width: 320px;
+  padding: 20px;
+  background:
+    linear-gradient(145deg, #2b2b2b, #1a1a1a);
+  border: 3px solid #cfa43a;
+  border-radius: 18px;
+  box-shadow:
+    inset 0 0 20px rgba(0,0,0,0.9),
+    0 0 25px rgba(207,164,58,0.4);
+}
+
+.stone-panel h2 {
+  margin-bottom: 15px;
+  color: gold;
+  text-shadow: 0 0 8px #ffcc00;
+}
+
+/* LISTS */
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  background: rgba(0,0,0,0.5);
+  border: 1px solid #6f5a2b;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-shadow: inset 0 0 6px rgba(0,0,0,0.8);
+}
+
+/* BUTTONS */
+.controls {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.stone-btn {
+  padding: 14px 28px;
+  font-size: 16px;
+  color: gold;
+  background:
+    linear-gradient(145deg, #4b4b4b, #2e2e2e);
+  border: 2px solid #cfa43a;
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow:
+    inset 0 -4px 6px rgba(0,0,0,0.9),
+    0 8px 18px rgba(0,0,0,0.8);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.stone-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(0,0,0,1);
+}
+
+.stone-btn:active {
+  transform: translateY(2px);
+  box-shadow: inset 0 6px 10px rgba(0,0,0,1);
+}
+
+/* DANGER BUTTON */
+.stone-btn.danger {
+  border-color: #ff5555;
+  color: #ff9999;
+}
+
+/* Total Team Wise */
+.tribe-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 12px;
+  background: linear-gradient(#2b2b2b, #1a1a1a);
+}
+
+.tribe-flame { border-left: 5px solid #ff6a00; color: #ffb347; }
+.tribe-aqua  { border-left: 5px solid #3fa9f5; color: #9ad0ff; }
+.tribe-wind  { border-left: 5px solid #4cd964; color: #9effb8; }
+.tribe-earth { border-left: 5px solid #a67c52; color: #d2b48c; }

@@ -8,94 +8,81 @@
 </head>
 
 <body>
-
   <div class="viewport">
 
-    <!-- FIRST SCREEN -->
-    <div class="first-screen">
+    <!-- CORNER LOGOS -->
+    <img src="./MMCOE-LOGO.png" class="mmcoe-logo" />
+    <img src="./AESA-Logo.png" class="aesa-logo" />
 
-      <!-- DEXTERITY PRESENTS -->
-      <img
-        src="./DEXTERITY-presents.jpg"
-        alt="Dexterity Presents"
-        class="dexterity-presents-img"
-      />
+    <!-- PERSISTENT HEADER -->
+    <div class="persistent-header">
+      <img src="./dex-no-bg.png" class="dexterity-presents-img" />
 
-      <!-- GAME TITLE -->
-      <img
-        src="./Reals of Atheria.PNG"
-        alt="Realm of Atheria"
-        class="game-title-img"
-      />
-
-      <!-- GAME LOGO -->
-      <img
-        src="./GAME-LOGO.PNG"
-        alt="Realm of Atheria Logo"
-        class="game-emblem"
-      />
-
-      <!-- SELECTION SCREEN -->
-      <div id="selection-screen">
-
-        <div class="subtitle">Choose Your Trial</div>
-
-        <div class="card-container">
-          <div class="card stone-tablet" onclick="selectDifficulty(5,this)">
-            <div class="tablet-content">
-              <h2>5</h2><p>1 STEP</p>
-            </div>
-          </div>
-
-          <div class="card stone-tablet" onclick="selectDifficulty(10,this)">
-            <div class="tablet-content">
-              <h2>10</h2><p>2 STEPS</p>
-            </div>
-          </div>
-
-          <div class="card stone-tablet" onclick="selectDifficulty(15,this)">
-            <div class="tablet-content">
-              <h2>15</h2><p>3 STEPS</p>
-            </div>
-          </div>
-        </div>
-
-        <button class="jungle-btn" onclick="startTrial()">
-          Enter the Jungle
-        </button>
+      <div class="title-row">
+        <!-- <img src="./GAME-LOGO.PNG" class="game-emblem" /> -->
+        <!-- <img src="./Reals of Atheria.PNG" class="game-title-img" /> -->
+        
       </div>
     </div>
 
-    <!-- TRIAL SCREEN -->
-    <div id="trial-screen" class="container hidden">
+    <!-- SCREEN AREA -->
+    <div class="screen-area backdrop-blur-md">
 
-      <div class="difficulty-header">
-        <span id="difficulty-badge"></span>
-        <span id="tribe-header"></span>
-      </div>
+      <!-- FIRST SCREEN -->
+      <div class="first-screen">
 
-      <!-- QUESTION + TIMER WRAPPER -->
-      <div class="question-wrapper">
+  <!-- BLURRED GAME LOGO BACKGROUND -->
+  <img
+    src="./GAME-LOGO.PNG"
+    alt="Realm of Atheria Background Logo"
+    class="bg-game-logo blur-sm"
+  />
 
-        <div id="global-timer" class="timer-above hidden">
-          20 seconds left
-        </div>
+  <div class="subtitle">Choose Your Destiny</div>
 
-        <div id="question-area">
-          <button class="jungle-btn" onclick="generateQuestion()">
-            Roll the Sacred Dice
-          </button>
-        </div>
-
-      </div>
-
-      <div id="options-grid" class="hidden"></div>
-      <div id="feedback"></div>
-
+  <div class="card-container">
+    <div class="card stone-tablet" onclick="selectDifficulty(5,this)">
+      <div class="tablet-content"><h2>5</h2><p>1 STEP</p></div>
     </div>
-
+    <div class="card stone-tablet" onclick="selectDifficulty(10,this)">
+      <div class="tablet-content"><h2>10</h2><p>2 STEPS</p></div>
+    </div>
+    <div class="card stone-tablet" onclick="selectDifficulty(15,this)">
+      <div class="tablet-content"><h2>15</h2><p>3 STEPS</p></div>
+    </div>
   </div>
 
-  <script type="module" src="/main.js"></script>
+  <button class="jungle-btn" onclick="startTrial()">Enter the Jungle</button>
+</div>
+
+
+      <!-- TRIAL SCREEN -->
+      <div id="trial-screen" class="hidden">
+        <div class="difficulty-header">
+          <span id="difficulty-badge"></span>
+          <span id="tribe-header"></span>
+        </div>
+
+        <div class="question-wrapper">
+          <div id="global-timer" class="timer-above hidden"></div>
+
+          <div id="question-area">
+            <button class="jungle-btn" onclick="generateQuestion()">
+              Roll the Sacred Dice
+            </button>
+          </div>
+        </div>
+
+        <div id="options-grid" class="hidden"></div>
+        <div id="feedback"></div>
+      </div>
+      <div id="result-screen" class="hidden">
+        <h2 id="result-message"></h2>
+        <button class="jungle-btn" onclick="restartGame()">Return to Village</button>
+
+    </div>
+  </div>
+
+  <script type="module" src="./main.js"></script>
 </body>
 </html>
